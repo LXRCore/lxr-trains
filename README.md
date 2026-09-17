@@ -1,4 +1,6 @@
-# 🐺 lxr-trains — Trains & Tramway for LXRCore
+<img src="https://raw.githubusercontent.com/LXRCore/.github/main/profile/lxrcore-logo.png" alt="LXRCore" width="72" align="left" style="margin-right:12px">
+
+# lxr-trains — Trains & Tramway for LXRCore
 
 Keeps the railroad alive on The Land of Wolves:
 
@@ -52,7 +54,6 @@ nearest track; adjust after the first run.
 ## Configuration
 
 Everything is in `config.lua`; nothing in `client/` or `server/` needs editing.
-Train config names → hashes live in `Config.TrainConfigs` (from femga's
-rdr3_discoveries).
+Train config names → hashes live in `Config.TrainConfigs`.
 
 © 2026 iBoss21 / LXRCore | lxrcore.com | All Rights Reserved — see LICENSE.

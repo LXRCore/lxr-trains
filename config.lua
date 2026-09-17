@@ -46,8 +46,8 @@ Config.Lang = 'en' -- any file in locales/ ('en', 'ka'); missing keys fall back 
 -- ████████████████████████ AMBIENT RAIL TRAFFIC ██████████████████████████████████
 -- ████████████████████████████████████████████████████████████████████████████████
 -- The game's own trains: freight and passenger trains roaming every line and
--- the Saint Denis trolley. These are what a stock RSG/VORP server shows; RedM
--- does not guarantee them, so we ask for them explicitly on every client.
+-- the Saint Denis trolley. RedM does not guarantee them, so we ask for them
+-- explicitly on every client.
 Config.Ambient = {
     enabled        = true,   -- SetRandomTrains(true) on every client (false = no ambient trains at all)
     whistles       = true,   -- ambient trains blow their whistle
@@ -122,17 +122,18 @@ Config.Lines = {
 -- ████████████████████████████████████████████████████████████████████████████████
 -- ████████████████████████ STATIONS & TICKETS ████████████████████████████████████
 -- ████████████████████████████████████████████████████████████████████████████████
+-- Fares: 3¢ a mile, the 1899 passenger rate. Price is the fare *to* this station.
 Config.Stations = {
-    { id = 'valentine',  label = 'Valentine',       coords = vector3(-172.35, 628.9, 114.09),  price = 1.50 },
-    { id = 'emerald',    label = 'Emerald Station',  coords = vector3(1524.03, 440.05, 90.68),  price = 1.25 },
-    { id = 'rhodes',     label = 'Rhodes',           coords = vector3(1226.71, -1301.17, 76.9), price = 1.50 },
-    { id = 'saintdenis', label = 'Saint Denis',      coords = vector3(2745.72, -1394.6, 46.18), price = 2.00 },
-    { id = 'annesburg',  label = 'Annesburg',        coords = vector3(2932.84, 1367.86, 58.38), price = 1.75 },
-    { id = 'wallace',    label = 'Wallace Station',  coords = vector3(-1301.49, 401.66, 95.4),  price = 1.25 },
-    { id = 'riggs',      label = 'Riggs Station',    coords = vector3(-1092.06, -576.4, 82.4),  price = 1.25 },
-    { id = 'flatneck',   label = 'Flatneck Station', coords = vector3(-334.9, -364.2, 88.3),    price = 1.00 },
-    { id = 'armadillo',  label = 'Armadillo',        coords = vector3(-3728.4, -2599.8, -13.3), price = 2.50 },
-    { id = 'benedict',   label = 'Benedict Point',   coords = vector3(-5228.6, -3470.1, -21.0), price = 2.50 },
+    { id = 'valentine',  label = 'Valentine',       coords = vector3(-172.35, 628.9, 114.09),  price = 1.20 },
+    { id = 'emerald',    label = 'Emerald Station',  coords = vector3(1524.03, 440.05, 90.68),  price = 0.75 },
+    { id = 'rhodes',     label = 'Rhodes',           coords = vector3(1226.71, -1301.17, 76.9), price = 1.80 },
+    { id = 'saintdenis', label = 'Saint Denis',      coords = vector3(2745.72, -1394.6, 46.18), price = 2.40 },
+    { id = 'annesburg',  label = 'Annesburg',        coords = vector3(2932.84, 1367.86, 58.38), price = 2.10 },
+    { id = 'wallace',    label = 'Wallace Station',  coords = vector3(-1301.49, 401.66, 95.4),  price = 1.50 },
+    { id = 'riggs',      label = 'Riggs Station',    coords = vector3(-1092.06, -576.4, 82.4),  price = 1.35 },
+    { id = 'flatneck',   label = 'Flatneck Station', coords = vector3(-334.9, -364.2, 88.3),    price = 0.90 },
+    { id = 'armadillo',  label = 'Armadillo',        coords = vector3(-3728.4, -2599.8, -13.3), price = 3.60 },
+    { id = 'benedict',   label = 'Benedict Point',   coords = vector3(-5228.6, -3470.1, -21.0), price = 4.20 },
 }
 
 Config.Tickets = {
@@ -157,7 +158,7 @@ Config.Riding = {
         enabled   = true,
         onlyWhenTrainAbsent = true, -- only offer when no managed passenger train is waiting
         travelMs  = 6000,     -- fade time simulating the journey
-        surcharge = 0.50,     -- added to the ticket price
+        surcharge = 0.25,     -- added to the ticket price (Pullman seat)
     },
 }
 
@@ -181,7 +182,7 @@ Config.Debug = {
 }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- Train config names (hashes from femga/rdr3_discoveries). Add your own.
+-- Train config names → hashes. Add your own.
 -- ═══════════════════════════════════════════════════════════════════════════════
 Config.TrainConfigs = {
     trolley_config          = 0xBF69518F,
