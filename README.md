@@ -4,6 +4,9 @@
 
 Keeps the railroad alive on The Land of Wolves:
 
+![Managed lines and stations](docs/img/timetable.png)
+
+
 * **Ambient rail traffic** — the game's own freight/passenger trains and the
   Saint Denis trolley are requested on every client (`Config.Ambient`). A stock
   RedM server shows them only by luck; here it is a setting.
