@@ -65,6 +65,12 @@ local function spawnTrain(id, def)
     while not Citizen.InvokeNative(0xBD3C4A2ED509205E, train) and tries < 100 do Wait(50) tries = tries + 1 end -- _HAS_TRAIN_LOADED
     NetworkRegisterEntityAsNetworked(train)
     SetEntityAsMissionEntity(train, true, true)
+    if Config.Managed.pinOwnership then
+        -- ownership hand-overs teleport a train to the first node of its track and drop its
+        -- carriages on current builds; the host keeps the train and the server re-hosts by
+        -- respawning instead (citizenfx/fivem#4205 tracks the engine-side fix)
+        SetNetworkIdCanMigrate(NetworkGetNetworkIdFromEntity(train), false)
+    end
     Citizen.InvokeNative(0x4182C037AA1F0091, train, def.stopsAtStations == true)          -- _SET_TRAIN_STOPS_FOR_STATIONS
     Citizen.InvokeNative(0x01021EB2E96B793C, train, def.cruiseSpeed + 0.0)               -- SET_TRAIN_CRUISE_SPEED
     Citizen.InvokeNative(0x9F29999DFDF2AEB8, train, def.cruiseSpeed + 0.0)               -- _SET_TRAIN_MAX_SPEED
@@ -80,8 +86,15 @@ local function watch(id)
         local h = hosted[id]
         while h and hosted[id] == h do
             Wait(1000)
-            if not DoesEntityExist(h.train) then
+            if not DoesEntityExist(h.train) or not NetworkHasControlOfEntity(h.train) then
                 hosted[id] = nil
+                TriggerServerEvent('lxr-trains:server:lost', id)
+                return
+            end
+            -- a consist that lost carriages is not our train any more: hand it back for a clean respawn
+            if h.cars and Citizen.InvokeNative(0x60B7D1DCC312697D, h.train, Citizen.ResultAsInteger()) < h.cars then
+                hosted[id] = nil
+                Citizen.InvokeNative(0x0D3630FB07E8B570, Citizen.PointerValueIntInitialized(h.train)) -- DELETE_MISSION_TRAIN
                 TriggerServerEvent('lxr-trains:server:lost', id)
                 return
             end
@@ -115,7 +128,7 @@ RegisterNetEvent('lxr-trains:client:host', function(id, def)
     if hosted[id] then return end
     local train = spawnTrain(id, def)
     if not train then return TriggerServerEvent('lxr-trains:server:lost', id) end
-    hosted[id] = { train = train, def = def }
+    hosted[id] = { train = train, def = def, cars = Citizen.InvokeNative(0x60B7D1DCC312697D, train, Citizen.ResultAsInteger()) } -- _GET_TRAIN_CARRIAGE_TRAILER_NUMBER
     TriggerServerEvent('lxr-trains:server:spawned', id, NetworkGetNetworkIdFromEntity(train))
     watch(id)
 end)

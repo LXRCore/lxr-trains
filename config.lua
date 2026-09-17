@@ -65,6 +65,7 @@ Config.Ambient = {
 Config.Managed = {
     enabled            = true,
     hostSelection      = 'nearest', -- 'nearest' (player closest to the spawn point) or 'first'
+    pinOwnership       = true,      -- the host keeps the train; no OneSync migration (migrating trains teleport and lose carriages on current builds)
     respawnDelayMs     = 15000,     -- wait after the train vanished (host left / deleted) before spawning again
     hostCheckMs        = 5000,      -- server timer that verifies hosts are still connected
     despawnWhenEmpty   = true,      -- delete managed trains when the server has no loaded players
