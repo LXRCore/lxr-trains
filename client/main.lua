@@ -182,19 +182,17 @@ local function openTicketMenu(station)
             options[#options + 1] = { id = s.id, label = s.label, price = s.price }
         end
     end
-    -- lxr-menu when present, otherwise a simple cycling prompt list via notifications
-    if GetResourceState('lxr-menu') == 'started' then
-        local items = {}
-        for _, o in ipairs(options) do
-            items[#items + 1] = { header = o.label, txt = Lang:t('ui.price', { price = o.price }), params = { event = 'lxr-trains:client:buy', args = { station.id, o.id } } }
-        end
-        if Config.Riding.fastTravel.enabled then
-            items[#items + 1] = { header = Lang:t('ui.fast_travel'), txt = Lang:t('ui.fast_travel_desc', { surcharge = Config.Riding.fastTravel.surcharge }), params = { event = 'lxr-trains:client:fastTravelMenu', args = { station.id } } }
-        end
-        items[#items + 1] = { header = Lang:t('ui.close'), params = { event = 'lxr-menu:client:closeMenu' } }
-        exports['lxr-menu']:openMenu(items)
+    -- the kit menu (lxr-nui); without it the ticket to the next station is sold directly
+    if GetResourceState('lxr-nui') == 'started' then
+        local rows = {}
+        for _, o in ipairs(options) do rows[#rows + 1] = { id = o.id, name = o.label, price = o.price } end
+        if Config.Riding.fastTravel.enabled then rows[#rows + 1] = { id = '__fast', name = Lang:t('ui.fast_travel'), sub = Lang:t('ui.fast_travel_desc', { surcharge = Config.Riding.fastTravel.surcharge }) } end
+        exports['lxr-nui']:Menu({ title = station.label, subtitle = Lang:t('ui.tickets'), rows = rows }, function(id)
+            if not id then return end
+            if id == '__fast' then return TriggerEvent('lxr-trains:client:fastTravelMenu', station.id) end
+            TriggerEvent('lxr-trains:client:buy', station.id, id)
+        end)
     else
-        -- fallback: sell a ticket to the next station in the list
         local next = options[1]
         if next then TriggerEvent('lxr-trains:client:buy', station.id, next.id) end
     end
@@ -217,15 +215,12 @@ RegisterNetEvent('lxr-trains:client:buy', function(fromId, toId, fast)
 end)
 
 RegisterNetEvent('lxr-trains:client:fastTravelMenu', function(fromId)
-    if GetResourceState('lxr-menu') ~= 'started' then return end
-    local items = {}
+    if GetResourceState('lxr-nui') ~= 'started' then return end
+    local rows = {}
     for _, s in ipairs(Config.Stations) do
-        if s.id ~= fromId then
-            items[#items + 1] = { header = s.label, txt = Lang:t('ui.price', { price = s.price + Config.Riding.fastTravel.surcharge }), params = { event = 'lxr-trains:client:buy', args = { fromId, s.id, true } } }
-        end
+        if s.id ~= fromId then rows[#rows + 1] = { id = s.id, name = s.label, price = s.price + Config.Riding.fastTravel.surcharge } end
     end
-    items[#items + 1] = { header = Lang:t('ui.close'), params = { event = 'lxr-menu:client:closeMenu' } }
-    exports['lxr-menu']:openMenu(items)
+    exports['lxr-nui']:Menu({ title = Lang:t('ui.fast_travel'), rows = rows }, function(id) if id then TriggerEvent('lxr-trains:client:buy', fromId, id, true) end end)
 end)
 
 CreateThread(function()
