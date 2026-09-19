@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2 — 2026-09-19
+* RDR3 native: the host keeps its train through `PREVENT_NETWORK_ID_MIGRATION` — `SetNetworkIdCanMigrate` is GTA V only and was a nil call on every train spawn.
+
 ## 1.0.1 — 2026-09-17
 * Managed trains are pinned to their host (`Config.Managed.pinOwnership`): no OneSync migration, which on current builds teleports a train to the first track node and drops its carriages. Lost control or a shrunken consist hands the line back for a clean respawn.
  — lxr-trains

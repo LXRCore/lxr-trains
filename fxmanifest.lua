@@ -35,7 +35,7 @@ lua54 'yes'
 name 'lxr-trains'
 author 'iBoss21 / LXRCore'
 description 'LXRCore v3 trains and tramway: ambient rail traffic, managed lines, stations, tickets'
-version '1.0.1'
+version '1.0.2'
 repository 'https://github.com/LXRCore/lxr-trains'
 
 shared_scripts {

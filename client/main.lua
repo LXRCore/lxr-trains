@@ -69,7 +69,7 @@ local function spawnTrain(id, def)
         -- ownership hand-overs teleport a train to the first node of its track and drop its
         -- carriages on current builds; the host keeps the train and the server re-hosts by
         -- respawning instead (citizenfx/fivem#4205 tracks the engine-side fix)
-        SetNetworkIdCanMigrate(NetworkGetNetworkIdFromEntity(train), false)
+        Citizen.InvokeNative(0x7182EDDA1EE7DB5A, NetworkGetNetworkIdFromEntity(train))   -- PREVENT_NETWORK_ID_MIGRATION (SetNetworkIdCanMigrate is GTA V only)
     end
     Citizen.InvokeNative(0x4182C037AA1F0091, train, def.stopsAtStations == true)          -- _SET_TRAIN_STOPS_FOR_STATIONS
     Citizen.InvokeNative(0x01021EB2E96B793C, train, def.cruiseSpeed + 0.0)               -- SET_TRAIN_CRUISE_SPEED
