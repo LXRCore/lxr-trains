@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0 — 2026-09-19
+* LXRCore v3 release line: every resource ships as 3.0.0 from here (the entries below are the road to it).
+
 ## 1.0.2 — 2026-09-19
 * RDR3 native: the host keeps its train through `PREVENT_NETWORK_ID_MIGRATION` — `SetNetworkIdCanMigrate` is GTA V only and was a nil call on every train spawn.
 
