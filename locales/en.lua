@@ -5,7 +5,7 @@
      ═══════════════════════════════════════════════════════════════════════════ ]]
 
 Locale.Register('en', {
-    prompt = {
+    prompt = { open = 'Open',
         tickets = '%{station} — Tickets',
         board   = 'Board the %{line}',
     },

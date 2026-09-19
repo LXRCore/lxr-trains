@@ -226,8 +226,7 @@ end)
 CreateThread(function()
     if not Config.Tickets.enabled then return end
     for _, s in ipairs(Config.Stations) do
-        LXRCore.Prompts.Create('lxr-trains:station:' .. s.id, s.coords, Config.Tickets.promptKey, Lang:t('prompt.tickets', { station = s.label }),
-            { type = 'callback', event = function() openTicketMenu(s) end }, Config.Tickets.promptDistance, nil, 0)
+        LXRCore.Functions.Door('lxr-trains:station:' .. s.id, s.coords, { label = Lang:t('prompt.tickets', { station = s.label }), action = Lang:t('prompt.open'), distance = Config.Tickets.promptDistance, control = Config.Tickets.promptKey }, function() openTicketMenu(s) end)
     end
 end)
 
